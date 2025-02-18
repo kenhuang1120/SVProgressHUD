@@ -14,6 +14,7 @@
 #import "SVProgressAnimatedView.h"
 #import "SVRadialGradientLayer.h"
 
+NSString * const SVProgressHUDDidReceiveLongTouchEventNotification = @"SVProgressHUDDidReceiveLongTouchEventNotification";
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
 NSString * const SVProgressHUDDidTouchDownInsideNotification = @"SVProgressHUDDidTouchDownInsideNotification";
 NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
@@ -714,6 +715,19 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     }
 }
 
+#pragma mark - Event handling: long touch even
+- (void)controlViewDidReceiveLongTouchEvent:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    
+    CGPoint touchLocation = [gestureRecognizer locationInView:self];
+    
+    if(CGRectContainsPoint(self.hudView.frame, touchLocation)) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SVProgressHUDDidReceiveLongTouchEventNotification
+                                                            object:self
+                                                          userInfo:[self notificationUserInfo]];
+    }
+    
+}
 
 #pragma mark - Master show/dismiss methods
 
